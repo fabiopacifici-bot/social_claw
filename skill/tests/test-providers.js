@@ -1,10 +1,10 @@
-const youtube = require('../skill/src/providers/youtube')
-const linkedin = require('../skill/src/providers/linkedin')
+const youtube = require('../src/providers/youtube')
+const linkedin = require('../src/providers/linkedin')
 const assert = require('assert')
 
 async function run(){
   // youtube dry-run
-  let res = await youtube.publish({title:'t', media_path:'./skill/examples/media-mock.png'}, {dryRun:true})
+  let res = await youtube.publish({title:'t', media_path:'./examples/media-mock.png'}, {dryRun:true})
   assert(res.provider==='youtube')
   console.log('youtube dry-run OK', res.videoId)
   // linkedin dry-run
