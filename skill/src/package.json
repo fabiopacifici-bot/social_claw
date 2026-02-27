@@ -1,0 +1,18 @@
+{
+  "name": "social-publish-skill",
+  "version": "0.1.0",
+  "description": "OpenClaw skill: publish to LinkedIn and YouTube",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node tests/run-tests.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "googleapis": "^118.0.0",
+    "node-fetch": "^3.3.1"
+  },
+  "devDependencies": {}
+}
