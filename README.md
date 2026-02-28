@@ -18,48 +18,58 @@ Repository layout
 
 Workflow
 --------
-1. Add credentials to 1Password (item template provided in SKILL.md).
+1. Copy `skill/.env.example` to `skill/.env` and fill in your credentials.
 2. Implement provider adapters for LinkedIn and YouTube.
 3. Expose agent-callable endpoints: publish(post), upload(video), schedule(post).
 4. Add a chat slash-command mapping that presents options and collects parameters.
 5. Test end-to-end with private (unlisted) YouTube uploads and LinkedIn test posts.
 
-Requirements (what I need from you)
------------------------------------
-Provide the following credentials and details so development and end-to-end testing can proceed. Store secrets in 1Password and share the item title & vault with me when ready.
+Requirements
+------------
 
-1) YouTube (recommended: OAuth2 refresh token)
-- OAuth2 client_id and client_secret
-- A refresh_token for the YouTube account/channel that will perform uploads
-- Preferred default upload privacy (public/unlisted/private)
-- Quota: estimate of expected monthly uploads (for rate-limiting considerations)
+### Runtime
 
-2) LinkedIn (recommended: OAuth2)
-- OAuth2 client_id and client_secret for a LinkedIn app with the following permissions:
-  - w_member_social (create posts)
-  - rw_organization_admin (if posting as an organization)
-- A refresh_token or long-lived access token for the account or organization page
-- Target audience preferences (public, connections-only, company page)
+- Node.js 18+
+- npm (for dependency installation)
 
-3) 1Password storage details
-- Create items in 1Password named:
-  - social-publish/youtube
-  - social-publish/linkedin
-- Each item should include fields: client_id, client_secret, refresh_token (and optional access_token), api_key (if used)
+### Dependencies (auto-installed via npm install)
 
-4) Runtime requirements (Node.js environment)
-- Node.js 18+ installed in the workspace
-- Yarn or npm for dependency management
-- `op` (1Password CLI) available on the dev machine for secret access during tests (we will use it inside tmux)
+- `dotenv` — loads environment variables from `.env`
+- `googleapis` — YouTube Data API v3 (OAuth2 upload)
+- `node-fetch` — LinkedIn API HTTP calls
 
-5) Testing accounts / sandboxes
-- For YouTube: ability to upload as Unlisted for testing
-- For LinkedIn: a test company page or profile where posts can be made without public impact
+### Environment Variables
 
-Security & access
------------------
-- Do not share secrets in chat. Add them to 1Password and provide item title + vault when ready.
-- I will only retrieve secrets using op inside tmux and will not log or persist them in plain text.
+Copy `skill/.env.example` to `skill/.env` and fill in your values. Never commit `.env`.
+
+**YouTube**
+
+| Variable                  | Description                                      |
+|---------------------------|--------------------------------------------------|
+| `YOUTUBE_CLIENT_ID`       | OAuth2 client ID from Google Cloud Console       |
+| `YOUTUBE_CLIENT_SECRET`   | OAuth2 client secret                             |
+| `YOUTUBE_REFRESH_TOKEN`   | Refresh token for the uploading account/channel  |
+
+**LinkedIn**
+
+| Variable                  | Description                                                    |
+|---------------------------|----------------------------------------------------------------|
+| `LINKEDIN_ACCESS_TOKEN`   | OAuth2 access token (w_member_social permission required)      |
+| `LINKEDIN_OWNER_URN`      | e.g. `urn:li:person:XXXX` or `urn:li:organization:XXXX`       |
+| `LINKEDIN_PERSON_ID`      | Alternative to OWNER_URN (used if URN not set)                 |
+
+### Credentials: where to get them
+
+**YouTube**
+1. Go to Google Cloud Console > APIs & Services > Credentials
+2. Create an OAuth2 client ID (Desktop app or Web)
+3. Enable YouTube Data API v3
+4. Run the OAuth flow once to get a refresh token
+
+**LinkedIn**
+1. Create a LinkedIn app at https://developer.linkedin.com
+2. Request `w_member_social` permission (and `rw_organization_admin` for company pages)
+3. Complete OAuth2 flow to obtain an access token
 
 Dev plan & timeline
 -------------------
