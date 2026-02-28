@@ -41,8 +41,12 @@ async function publish(payload, opts={}){
       url: 'https://www.linkedin.com/feed/update/urn:li:share:dryrun-' + Date.now()
     }
   }
-  const secrets = opts.secrets
-  if(!secrets || !secrets.access_token) throw new Error('Missing LinkedIn access token in secrets')
+  const secrets = opts.secrets || {
+    access_token: process.env.LINKEDIN_ACCESS_TOKEN,
+    owner: process.env.LINKEDIN_OWNER_URN,
+    personId: process.env.LINKEDIN_PERSON_ID
+  }
+  if(!secrets || !secrets.access_token) throw new Error('Missing LinkedIn access token (set LINKEDIN_ACCESS_TOKEN)')
   const owner = secrets.owner || `urn:li:person:${secrets.personId}`
   // If media provided, register and upload
   let asset = null

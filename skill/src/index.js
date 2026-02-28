@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const providers = {
   youtube: require('./providers/youtube'),
   linkedin: require('./providers/linkedin')

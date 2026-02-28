@@ -52,10 +52,14 @@ async function publish(payload, opts={}){
       url: `https://youtu.be/${id}`
     }
   }
-  // production path: require secrets object either passed in opts.secrets or read via helper
-  const secrets = opts.secrets
-  if(!secrets || !secrets.client_id || !secrets.client_secret){
-    throw new Error('Missing YouTube OAuth client secrets')
+  // production path: secrets from opts or env vars
+  const secrets = opts.secrets || {
+    client_id: process.env.YOUTUBE_CLIENT_ID,
+    client_secret: process.env.YOUTUBE_CLIENT_SECRET,
+    refresh_token: process.env.YOUTUBE_REFRESH_TOKEN
+  }
+  if(!secrets.client_id || !secrets.client_secret){
+    throw new Error('Missing YouTube OAuth secrets (set YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET, YOUTUBE_REFRESH_TOKEN)')
   }
   const oauth2Client = await getOAuthClientFromSecrets(secrets)
   // ensure we have a valid access token (refresh if possible)
