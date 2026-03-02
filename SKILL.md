@@ -110,4 +110,3 @@ Secrets must be read at runtime using the OpenClaw 1Password skill — do not co
 ## Notes
 
 This SKILL.md now follows the organizational layout used by other mature skills in the workspace: clear Overview, Triggers, Providers, API surface, Auth, Usage, and Development notes. Keep this document updated when adding new features or providers.
-
