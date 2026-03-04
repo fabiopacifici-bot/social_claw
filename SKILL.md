@@ -60,19 +60,14 @@ Example publish payload:
 
 ## Auth & Secrets
 
-Store provider credentials in 1Password under the item title `social_publish/<provider>` with fields:
-- `client_id`
-- `client_secret`
-- `refresh_token` (OAuth)
-- `access_token` (optional)
-- `api_key` (if applicable)
+Copy `.env.example` to `.env` and populate your credentials for each provider. The publish CLI and skill adapters load secrets at runtime using dotenv.
 
-Secrets must be read at runtime using the OpenClaw 1Password skill — do not commit secrets to the repo and never log them.
+Do not commit `.env` to the repository and never log secrets.
 
 ## Security
 
 - Use minimal OAuth scopes required (upload + manage) for each provider.
-- Refresh tokens should be rotated and stored in 1Password.
+- Rotate credentials regularly and keep them out of source control.
 - Mask or redact sensitive fields in logs.
 
 ## Skill Usage
@@ -84,7 +79,7 @@ Secrets must be read at runtime using the OpenClaw 1Password skill — do not co
 
 - Provider adapters live in `skill/src/providers/` (implement `linkedin` and `youtube` adapters).
 - Include a local test harness at `skill/src/cli` that supports `--dry-run` mode and verbose output for debugging.
-- Unit and integration tests should mock provider APIs and the 1Password secret retrieval.
+- Unit and integration tests should mock provider APIs and the secret retrieval (dotenv can be loaded in test setup).
 
 ## Files & Locations
 
@@ -95,7 +90,7 @@ Secrets must be read at runtime using the OpenClaw 1Password skill — do not co
 ## Prerequisites
 
 - Python 3.8+ or Node 16+ depending on adapter implementation.
-- 1Password CLI available when running publish flows that require secrets.
+- Copy `.env.example` to `.env` and populate credentials before running.
 
 ## Example flows
 
